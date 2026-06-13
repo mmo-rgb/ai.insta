@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InstaAI — Контент для Instagram за 30 секунд</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --border: #1e1e2e;
+      --accent: #c850c0;
+      --accent2: #4158d0;
+      --text: #f0f0f5;
+      --muted: #6b6b80;
+      --grad: linear-gradient(135deg, #4158d0, #c850c0, #ffcc70);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(193,80,192,0.15) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(193,80,192,0.15);
+      border: 1px solid rgba(193,80,192,0.3);
+      color: #e080df;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: clamp(36px, 7vw, 72px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    h1 .grad {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    .cta-btn {
+      background: var(--grad);
+      color: #fff;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 100px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .cta-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    /* APP SECTION */
+    .app-section {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 20px 100px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 580px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+    }
+
+    select option { background: var(--surface); }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    .what-to-gen {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .gen-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      user-select: none;
+    }
+
+    .gen-option input[type="checkbox"] { display: none; }
+
+    .gen-option.checked {
+      border-color: var(--accent);
+      background: rgba(193,80,192,0.08);
+    }
+
+    .gen-option .icon { font-size: 20px; }
+    .gen-option .label-text { font-size: 14px; font-weight: 500; }
+
+    .generate-btn {
+      width: 100%;
+      background: var(--grad);
+      color: #fff;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .generate-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+    .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* RESULTS */
+    .results { display: none; }
+    .results.visible { display: block; }
+
+    .result-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .result-block h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .result-content {
+      font-size: 15px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      color: var(--text);
+    }
+
+    .copy-btn {
+      margin-top: 14px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* LOADING */
+    .loader {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .loader.visible { display: block; }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader p { color: var(--muted); font-size: 15px; }
+
+    /* FEATURES */
+    .features {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .features h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .features .section-sub {
+      color: var(--muted);
+      margin-bottom: 48px;
+      font-size: 17px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: left;
+    }
+
+    .feature-card .fi { font-size: 28px; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+    /* PRICING */
+    .pricing {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .pricing h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .pricing .section-sub {
+      color: var(--muted);
+      margin-bottom: 48px;
+      font-size: 17px;
+    }
+
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 500px) {
+      .pricing-cards { grid-template-columns: 1fr; }
+    }
+
+    .price-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 24px;
+      text-align: left;
+    }
+
+    .price-card.featured {
+      border-color: var(--accent);
+      background: rgba(193,80,192,0.06);
+    }
+
+    .price-card .plan { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .price-card .amount { font-size: 42px; font-weight: 800; margin-bottom: 4px; }
+    .price-card .amount span { font-size: 18px; font-weight: 500; color: var(--muted); }
+    .price-card .desc { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+    .price-card ul { list-style: none; margin-bottom: 24px; }
+    .price-card ul li { font-size: 14px; padding: 6px 0; color: var(--text); }
+    .price-card ul li::before { content: '✓  '; color: var(--accent); font-weight: 700; }
+
+    .buy-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s;
+    }
+
+    .buy-btn.main { background: var(--grad); color: #fff; }
+    .buy-btn.outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .buy-btn:hover { opacity: 0.82; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 32px 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* SCROLL ANCHOR */
+    #app { scroll-margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">⚡ Работает на Claude AI</div>
+  <h1>Контент для Instagram<br><span class="grad">за 30 секунд</span></h1>
+  <p class="subtitle">Вводишь нишу и аудиторию — получаешь посты, сценарии Reels, автоворонку и Bio. Без SMM-щика.</p>
+  <a href="#app" class="cta-btn">Попробовать бесплатно →</a>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <h2>Что генерирует InstaAI</h2>
+  <p class="section-sub">Всё что нужно для Instagram — в одном инструменте</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="fi">💡</div>
+      <h3>10 идей для постов</h3>
+      <p>Темы под твою нишу и аудиторию, которые реально зайдут</p>
+    </div>
+    <div class="feature-card">
+      <div class="fi">✍️</div>
+      <h3>Готовый пост</h3>
+      <p>Текст с хэштегами и призывом к действию — копируй и публикуй</p>
+    </div>
+    <div class="feature-card">
+      <div class="fi">🎬</div>
+      <h3>Сценарий Reels</h3>
+      <p>Структура 30–45 сек без голоса. Снимай и набирай просмотры</p>
+    </div>
+    <div class="feature-card">
+      <div class="fi">🔁</div>
+      <h3>Автоворонка</h3>
+      <p>Лид-магнит + цепочка сообщений + оффер. Продавай на автопилоте</p>
+    </div>
+    <div class="feature-card">
+      <div class="fi">👤</div>
+      <h3>3 варианта Bio</h3>
+      <p>Цепляющие описания профиля под разные цели</p>
+    </div>
+    <div class="feature-card">
+      <div class="fi">⚡</div>
+      <h3>Мгновенно</h3>
+      <p>Результат за секунды. Не нужно ждать фрилансера</p>
+    </div>
+  </div>
+</section>
+
+<!-- APP -->
+<section class="app-section" id="app">
+  <div class="card">
+    <h2>🚀 Создать контент</h2>
+
+    <div class="form-grid">
+      <div>
+        <label>Ниша</label>
+        <input type="text" id="niche" placeholder="Фитнес, бьюти, психология..." />
+      </div>
+      <div>
+        <label>Аудитория</label>
+        <input type="text" id="audience" placeholder="Женщины 25-35, мамы в декрете..." />
+      </div>
+    </div>
+
+    <div style="margin-bottom:14px">
+      <label>Стиль подачи</label>
+      <select id="style">
+        <option value="экспертный">Экспертный</option>
+        <option value="дружелюбный">Дружелюбный</option>
+        <option value="мотивирующий">Мотивирующий</option>
+        <option value="провокационный">Провокационный</option>
+        <option value="сторителлинг">Сторителлинг</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <label>Что генерируем</label>
+      <div class="what-to-gen" id="genOptions">
+        <div class="gen-option checked" data-value="ideas">
+          <span class="icon">💡</span><span class="label-text">10 идей постов</span>
+          <input type="checkbox" checked />
+        </div>
+        <div class="gen-option checked" data-value="post">
+          <span class="icon">✍️</span><span class="label-text">Готовый пост</span>
+          <input type="checkbox" checked />
+        </div>
+        <div class="gen-option checked" data-value="reels">
+          <span class="icon">🎬</span><span class="label-text">Сценарий Reels</span>
+          <input type="checkbox" checked />
+        </div>
+        <div class="gen-option" data-value="funnel">
+          <span class="icon">🔁</span><span class="label-text">Автоворонка</span>
+          <input type="checkbox" />
+        </div>
+        <div class="gen-option" data-value="bio">
+          <span class="icon">👤</span><span class="label-text">3 варианта Bio</span>
+          <input type="checkbox" />
+        </div>
+      </div>
+    </div>
+
+    <button class="generate-btn" id="generateBtn" onclick="generate()">
+      ⚡ Сгенерировать контент
+    </button>
+  </div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    <p>Claude AI генерирует контент...</p>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results"></div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing">
+  <h2>Простые цены</h2>
+  <p class="section-sub">Честно: это инструмент на базе Claude AI</p>
+  <div class="pricing-cards">
+    <div class="price-card">
+      <div class="plan">Разовый доступ</div>
+      <div class="amount">990<span> ₽</span></div>
+      <div class="desc">Оплата один раз</div>
+      <ul>
+        <li>Безлимитная генерация</li>
+        <li>Все 5 типов контента</li>
+        <li>Доступ навсегда</li>
+      </ul>
+      <button class="buy-btn outline">Купить доступ</button>
+    </div>
+    <div class="price-card featured">
+      <div class="plan">Подписка</div>
+      <div class="amount">490<span> ₽/мес</span></div>
+      <div class="desc">Отменить в любой момент</div>
+      <ul>
+        <li>Безлимитная генерация</li>
+        <li>Все 5 типов контента</li>
+        <li>Новые функции первым</li>
+      </ul>
+      <button class="buy-btn main">Оформить подписку</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>InstaAI работает через Claude AI (Anthropic) — это честный инструмент, не магия 🤖</p>
+</footer>
+
+<script>
+  // Toggle checkboxes
+  document.querySelectorAll('.gen-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      opt.classList.toggle('checked');
+      opt.querySelector('input').checked = opt.classList.contains('checked');
+    });
+  });
+
+  function buildPrompt(niche, audience, style, selected) {
+    const parts = [];
+    parts.push(`Ты — эксперт по Instagram-контенту. Создай контент для следующего профиля:\n\nНиша: ${niche}\nЦелевая аудитория: ${audience}\nСтиль подачи: ${style}\n`);
+
+    if (selected.includes('ideas')) {
+      parts.push(`\n## 10 ИДЕЙ ДЛЯ ПОСТОВ\nНапиши 10 конкретных идей для постов. Каждая идея — одно предложение с цепляющим заголовком.`);
+    }
+    if (selected.includes('post')) {
+      parts.push(`\n## ГОТОВЫЙ ПОСТ С ХЭШТЕГАМИ\nНапиши полноценный пост для Instagram: цепляющее начало, основной текст 150-200 слов, призыв к действию, 15-20 хэштегов.`);
+    }
+    if (selected.includes('reels')) {
+      parts.push(`\n## СЦЕНАРИЙ REELS (30-45 СЕК, БЕЗ ГОЛОСА)\nСтруктура: крючок (0-3 сек), основной контент по секундам, финальный экран с CTA. Без закадрового голоса — только текст на экране и действия.`);
+    }
+    if (selected.includes('funnel')) {
+      parts.push(`\n## АВТОВОРОНКА\n1. Лид-магнит: что предлагаем бесплатно и как\n2. Цепочка сообщений (3 письма/сообщения)\n3. Оффер: финальное предложение с ценой`);
+    }
+    if (selected.includes('bio')) {
+      parts.push(`\n## 3 ВАРИАНТА BIO ДЛЯ ПРОФИЛЯ\nКаждый вариант до 150 символов. Разные подходы: экспертный, эмоциональный, конкретный с результатами.`);
+    }
+
+    return parts.join('\n');
+  }
+
+  async function generate() {
+    const niche = document.getElementById('niche').value.trim();
+    const audience = document.getElementById('audience').value.trim();
+    const style = document.getElementById('style').value;
+
+    if (!niche || !audience) {
+      alert('Заполни нишу и аудиторию');
+      return;
+    }
+
+    const selected = [...document.querySelectorAll('.gen-option.checked')].map(o => o.dataset.value);
+    if (selected.length === 0) {
+      alert('Выбери хотя бы один тип контента');
+      return;
+    }
+
+    const btn = document.getElementById('generateBtn');
+    const loader = document.getElementById('loader');
+    const results = document.getElementById('results');
+
+    btn.disabled = true;
+    loader.classList.add('visible');
+    results.classList.remove('visible');
+    results.innerHTML = '';
+
+    const prompt = buildPrompt(niche, audience, style, selected);
+
+    try {
+      const res = await fetch('/.netlify/functions/claude', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+
+      const data = await res.json();
+      const text = data.content?.[0]?.text || 'Ошибка: пустой ответ';
+
+      // Parse sections
+      const sections = parseSections(text, selected);
+      results.innerHTML = sections;
+      results.classList.add('visible');
+
+    } catch (err) {
+      results.innerHTML = `<div class="result-block"><div class="result-content">Ошибка: ${err.message}</div></div>`;
+      results.classList.add('visible');
+    } finally {
+      btn.disabled = false;
+      loader.classList.remove('visible');
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  const sectionTitles = {
+    ideas: '💡 10 идей для постов',
+    post: '✍️ Готовый пост с хэштегами',
+    reels: '🎬 Сценарий Reels',
+    funnel: '🔁 Автоворонка',
+    bio: '👤 3 варианта Bio'
+  };
+
+  function parseSections(text, selected) {
+    // Split by ## headers
+    const blocks = text.split(/\n(?=##\s)/);
+    let html = '';
+
+    blocks.forEach(block => {
+      const lines = block.trim().split('\n');
+      const header = lines[0].replace(/^##\s*/, '').trim();
+      const content = lines.slice(1).join('\n').trim();
+      if (!content) return;
+
+      html += `
+        <div class="result-block">
+          <h3>${header}</h3>
+          <div class="result-content">${escapeHtml(content)}</div>
+          <button class="copy-btn" onclick="copyText(this)">📋 Копировать</button>
+        </div>`;
+    });
+
+    if (!html) {
+      html = `<div class="result-block"><h3>Результат</h3><div class="result-content">${escapeHtml(text)}</div><button class="copy-btn" onclick="copyText(this)">📋 Копировать</button></div>`;
+    }
+
+    return html;
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function copyText(btn) {
+    const content = btn.previousElementSibling.textContent;
+    navigator.clipboard.writeText(content).then(() => {
+      btn.textContent = '✅ Скопировано!';
+      setTimeout(() => btn.textContent = '📋 Копировать', 2000);
+    });
+  }
+</script>
+</body>
+</html>
